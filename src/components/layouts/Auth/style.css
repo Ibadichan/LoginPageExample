@@ -1,0 +1,22 @@
+.auth-layout {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  min-height: 100vh;
+  color: white;
+  background-color: #fe2f67;
+  background: linear-gradient(
+    240.82deg,
+    #ff9a58 -0.07%,
+    #fe2f67 54.53%,
+    #7431d7 116.25%
+  );
+}
+
+.auth-layout__header {
+  margin: 0;
+  margin-bottom: 32px;
+  font-size: 32px;
+  line-height: var(--header-line-height);
+}
