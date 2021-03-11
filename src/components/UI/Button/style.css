@@ -8,9 +8,8 @@
   text-align: center;
   font: inherit;
   font-weight: 500;
-  font-size: 18px;
+  font-size: 16px;
   line-height: 1.2;
-  letter-spacing: 2.777px;
   text-transform: uppercase;
 
   border: 0;
@@ -25,7 +24,7 @@
 }
 
 .button_primary {
-  padding: 16px 48px;
+  padding: 16px;
   color: var(--primary-color);
   background-color: var(--secondary-color);
   border-radius: 50px;

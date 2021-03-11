@@ -25,6 +25,12 @@ const Button = (props) => {
     type: $component === "button" ? type : undefined,
   };
 
+  for (const propertyName in nodeProps) {
+    if (propertyName.startsWith("$")) {
+      delete nodeProps[propertyName];
+    }
+  }
+
   return (
     <props.$component {...nodeProps}>
       {$prepend && <span className="button__prepend">{$prepend}</span>}

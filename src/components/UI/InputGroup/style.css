@@ -1,0 +1,42 @@
+.input-group_primary .input-group__label {
+  display: inline-block;
+  vertical-align: middle;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1.5;
+  cursor: pointer;
+}
+
+.input-group_primary .input-group__input {
+  display: block;
+  width: 100%;
+  padding: 16px;
+  font: inherit;
+  color: white;
+  font-size: 16px;
+  line-height: 1;
+  background-color: #161825;
+  border: 0;
+  border-radius: 50px;
+}
+
+.input-group_primary .input-group__input::placeholder {
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.input-group_primary .input-group__body {
+  position: relative;
+  display: block;
+}
+
+.input-group_primary .input-group__show-password {
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  min-width: 0;
+  width: 64px;
+  padding: 5px;
+  font-size: 12px;
+  transform: translateY(-50%);
+}
