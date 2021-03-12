@@ -1,13 +1,14 @@
-import React, { useState, useCallback } from "react";
+import React, { forwardRef, useState, useCallback } from "react";
 import classNames from "classnames";
 import Button from "components/UI/Button";
 
-function Input(props) {
-  const { type, className, $canShowPassword } = props;
+function Input(props, ref) {
+  const { type, className, $error, $canShowPassword } = props;
   const [inputType, setInputType] = useState(type);
 
   const nodeProps = {
     ...props,
+    ref,
     type: inputType,
     className: classNames("input-group__input", className),
   };
@@ -28,7 +29,7 @@ function Input(props) {
   const input = <input {...nodeProps} />;
 
   const inputWithShowPassword = (
-    <span className="input-group__body">
+    <span className="input-group__input-wrapper">
       {input}
       <Button
         className="input-group__show-password"
@@ -40,11 +41,18 @@ function Input(props) {
     </span>
   );
 
-  return $canShowPassword ? inputWithShowPassword : input;
+  return (
+    <span className="input-group__body">
+      {$canShowPassword ? inputWithShowPassword : input}
+      {$error && <aside className="input-group__error">{$error}</aside>}
+    </span>
+  );
 }
 
-Input.defaultProps = {
+const forwardedInput = forwardRef(Input);
+
+forwardedInput.defaultProps = {
   type: "text",
 };
 
-export default Input;
+export default forwardedInput;
