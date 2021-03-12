@@ -28,12 +28,11 @@
   color: var(--primary-color);
   background-color: var(--secondary-color);
   border-radius: 50px;
-  transition: opacity 0.38s ease;
 }
 
 .button_primary:hover,
 .button_primary:focus {
-  opacity: 0.9;
+  background-color: #f3f2da;
 }
 
 .button_tertiary {

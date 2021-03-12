@@ -7,7 +7,7 @@ function AuthLayout(props) {
 
   return (
     <main className={classNames("auth-layout", className)}>
-      <div className="container">
+      <div className="auth-layout__inner container">
         <h1 className="auth-layout__header">{header}</h1>
         {children}
       </div>
