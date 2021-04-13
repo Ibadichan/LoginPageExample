@@ -7,6 +7,11 @@ const schema = yup.object().shape({
     .string()
     .oneOf([yup.ref("password")], "Passwords must match")
     .required("Password confirmation is required"),
+  currency: yup
+    .string()
+    .oneOf(['usd', 'rub'], "Choose correct currency")
+    .nullable()
+    .required("Currency is required"),
 });
 
 export default schema;

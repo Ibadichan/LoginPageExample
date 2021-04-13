@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { signUpPath } from "helpers/routes";
 import AuthLayout from "components/layouts/Auth";
-import AuthPagesFooter from "components/common/AuthPagesFooter";
 import Button from "components/UI/Button";
 import InputGroup from "components/UI/InputGroup";
 import userSchema from "./userSchema";
@@ -32,7 +31,6 @@ function SignInPage() {
         <>
           <form
             onSubmit={handleSubmit(setCurrentUser)}
-            id="sign-in-form"
             className="sign-in-form sign-in__form"
             method="POST"
             action="/sign-in"
@@ -77,18 +75,20 @@ function SignInPage() {
                 $canShowPassword
               />
             </InputGroup>
+
+            <Button type="submit" >
+              Sign in
+            </Button>
           </form>
 
-          <AuthPagesFooter
-            actions={[
-              <Button type="submit" form="sign-in-form">
-                Sign in
-              </Button>,
-              <Button $type="tertiary" $component={Link} to={signUpPath()}>
-                New account
-              </Button>,
-            ]}
-          />
+          <Button
+            $type="tertiary"
+            $component={Link}
+            to={signUpPath()}
+            className="sign-in__another-action"
+          >
+            New account
+          </Button>
         </>
       )}
     </AuthLayout>

@@ -1,0 +1,71 @@
+.radio-group_primary .radio-group__label {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  padding-left: 32px;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1.5;
+  cursor: pointer;
+}
+
+.radio-group_primary .radio-group__label::before,
+.radio-group_primary .radio-group__label::after {
+  position: absolute;
+  top: 50%;
+  border-radius: 50%;
+}
+
+.radio-group_primary .radio-group__label::before {
+  content: "";
+  left: 0;
+  width: 16px;
+  height: 16px;
+  border: 2px solid currentColor;
+  transform: translateY(-50%);
+}
+
+.radio-group_primary .radio-group__label::after {
+  content: none;
+  left: 8px;
+  width: 6px;
+  height: 6px;
+  background-color: currentColor;
+  transform: translate(-50%, -50%);
+}
+
+.radio-group_primary .radio-group__radio:checked + .radio-group__label::after {
+  content: "";
+}
+
+.radio-group_primary .radio-group__radio:focus + .radio-group__label {
+  opacity: 0.8;
+}
+
+.radio-group_primary .radio-group__label:hover {
+  opacity: 0.9;
+}
+
+.radio-group_primary .radio-group__legend {
+  margin-bottom: 8px;
+}
+
+.radio-group_primary .radio-group__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.radio-group_primary .radio-group__item:not(:last-child) {
+  margin-right: 32px;
+}
+
+.radio-group_primary .radio-group__error {
+  display: block;
+  text-align: center;
+  font-size: 14px;
+  margin-top: 4px;
+}

@@ -21,6 +21,11 @@
   line-height: var(--header-line-height);
 }
 
+.auth-layout .auth-layout__inner {
+  display: flex;
+  flex-direction: column;
+}
+
 @media (min-width: 48em) {
   .auth-layout .auth-layout__inner {
     margin-left: auto;

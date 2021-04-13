@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { signInPath, signUpPath } from "helpers/routes";
 import AuthLayout from "components/layouts/Auth";
-import AuthPagesFooter from "components/common/AuthPagesFooter";
+import AuthPagesFooter from "./components/AuthPagesFooter";
 import Button from "components/UI/Button";
 
 function RootPage() {

@@ -1,11 +1,20 @@
 .sign-up-form {
-  margin-bottom: -16px;
+  display: flex;
+  flex-direction: column;
 }
 
 .sign-up__form {
-  margin-bottom: 64px;
+  margin-bottom: 16px;
 }
 
 .sign-up-form__item {
   margin-bottom: 16px;
+}
+
+.sign-up__another-action {
+  margin: 0 auto;
+}
+
+.sign-up-form__submit {
+  margin-top: 16px;
 }

@@ -30,9 +30,13 @@
   border-radius: 50px;
 }
 
-.button_primary:hover,
+.button_primary:hover {
+  background-color: #eddbab;
+}
+
 .button_primary:focus {
-  background-color: #f3f2da;
+  outline: none;
+  background-color: #e4c981;
 }
 
 .button_tertiary {
@@ -42,6 +46,7 @@
 
 .button_tertiary:hover,
 .button_tertiary:focus {
+  outline: none;
   text-decoration: none;
 }
 

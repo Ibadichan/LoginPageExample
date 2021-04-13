@@ -20,9 +20,14 @@
   border-radius: 50px;
 }
 
+.input-group_primary .input-group__input:focus {
+  outline: 0;
+  box-shadow: inset 0 0 0 2px white;
+}
+
 .input-group_primary .input-group__input::placeholder {
   font-weight: 300;
-  color: rgba(255, 255, 255, 0.4);
+  color: rgb(191, 194, 217);
 }
 
 .input-group_primary .input-group__input-wrapper {
