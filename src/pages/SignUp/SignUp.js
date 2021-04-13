@@ -5,20 +5,38 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { signInPath } from "helpers/routes";
 import AuthLayout from "components/layouts/Auth";
 import Button from "components/UI/Button";
-import InputGroup from "components/UI/InputGroup";
-import RadioGroup from "components/UI/RadioGroup";
+import CurrentUserDetails from './components/CurrentUserDetails';
+import Form from './components/Form';
 import userSchema from "./userSchema";
+import { registerUser } from './API';
 import "./style.css";
 
 function SignUpPage() {
   const [createdUser, setCreatedUser] = useState(null);
+  const [commonFormError, setCommonFormError] = useState(null);
+  const [isFormLoading, setIsFormLoading] = useState(false);
 
   const { register, handleSubmit, errors } = useForm({
     resolver: yupResolver(userSchema),
   });
 
-  const onSubmit = useCallback((values) => {
-    setCreatedUser(values);
+  const onSubmit = useCallback(async (values) => {
+    setIsFormLoading(true);
+
+    try {
+      const response = await registerUser(values);
+
+      if (response.body) {
+        setCommonFormError(null);
+        setCreatedUser(response.body);
+      }
+    } catch (error) {
+      if (error && error.status) {
+        setCommonFormError(error.response?.body?.error)
+      }
+    } finally {
+      setIsFormLoading(false);
+    }
   }, []);
 
   return (
@@ -31,106 +49,16 @@ function SignUpPage() {
       }
     >
       {createdUser ? (
-        <p>{JSON.stringify(createdUser)}</p>
+        <CurrentUserDetails user={createdUser} />
       ) : (
         <>
-          <form
+          <Form
             onSubmit={handleSubmit(onSubmit)}
-            className="sign-up-form sign-up__form"
-            method="POST"
-            action="/sign-up"
-            noValidate
-          >
-            <InputGroup className="sign-up-form__item">
-              <InputGroup.Label
-                className="visually-hidden"
-                htmlFor="email-field"
-              >
-                Enter your email:
-              </InputGroup.Label>
-
-              <InputGroup.Input
-                type="email"
-                id="email-field"
-                placeholder="Email"
-                autoComplete="email"
-                name="email"
-                ref={register}
-                $error={errors.email?.message}
-                autoFocus
-              />
-            </InputGroup>
-
-            <InputGroup className="sign-up-form__item">
-              <InputGroup.Label
-                className="visually-hidden"
-                htmlFor="password-field"
-              >
-                Enter your password:
-              </InputGroup.Label>
-
-              <InputGroup.Input
-                type="password"
-                id="password-field"
-                placeholder="Password"
-                autoComplete="new-password"
-                name="password"
-                ref={register}
-                $error={errors.password?.message}
-                $canShowPassword
-              />
-            </InputGroup>
-
-            <InputGroup className="sign-up-form__item">
-              <InputGroup.Label
-                className="visually-hidden"
-                htmlFor="password-confirmation-field"
-              >
-                Confirm your password:
-              </InputGroup.Label>
-
-              <InputGroup.Input
-                type="password"
-                id="password-confirmation-field"
-                placeholder="Password Again"
-                name="passwordConfirmation"
-                ref={register}
-                $error={errors.passwordConfirmation?.message}
-                $canShowPassword
-              />
-            </InputGroup>
-
-            <RadioGroup
-              className="sign-up-form__item"
-              $error={errors.currency?.message}
-            >
-              <RadioGroup.Legend>
-                Choose your currency:
-              </RadioGroup.Legend>
-
-              <RadioGroup.List>
-                <RadioGroup.Radio
-                  id="currency-usd-field"
-                  label="USD"
-                  name="currency"
-                  value="usd"
-                  ref={register}
-                />
-
-                <RadioGroup.Radio
-                  id="currency-rub-field"
-                  label="RUB"
-                  name="currency"
-                  value="rub"
-                  ref={register}
-                />
-              </RadioGroup.List>
-            </RadioGroup>
-
-            <Button type="submit" className="sign-up-form__submit">
-              Create new account
-            </Button>
-          </form>
+            commonError={commonFormError}
+            register={register}
+            errors={errors}
+            isLoading={isFormLoading}
+          />
 
           <Button
             $type="tertiary"

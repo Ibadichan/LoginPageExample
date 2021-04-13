@@ -39,6 +39,10 @@
   background-color: #e4c981;
 }
 
+.button_primary:disabled {
+  opacity: 0.8;
+}
+
 .button_tertiary {
   color: var(--secondary-color);
   text-decoration: underline;

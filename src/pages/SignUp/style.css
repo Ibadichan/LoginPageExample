@@ -18,3 +18,7 @@
 .sign-up-form__submit {
   margin-top: 16px;
 }
+
+.sign-up-form__common-error {
+  margin-bottom: 16px;
+}
