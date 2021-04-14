@@ -7,7 +7,7 @@ async function getCurrentUser() {
     endpoint: `${process.env.REACT_APP_API_URL}/proxy/user`,
     headers: {
       Authorization: `Bearer ${cookies.get('auth-token')}`,
-    }
+    },
   })
 
   return response;
