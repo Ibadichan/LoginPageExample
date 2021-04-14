@@ -7,7 +7,7 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 const config = require('./config/index');
 
 const app = express();
-const port = process.env.PORT || 3001;
+const port = process.env.SERVER_PORT || 3001;
 const isProduction = process.env.NODE_ENV === 'production';
 
 app.use(cors(config.cors));
@@ -15,7 +15,7 @@ app.use(cors(config.cors));
 app.use(
   '/proxy',
   createProxyMiddleware({
-    target: process.env.API_URL,
+    target: process.env.RUCAPTCHA_API_URL,
     changeOrigin: true,
     pathRewrite: {
       [`^/proxy`]: '',

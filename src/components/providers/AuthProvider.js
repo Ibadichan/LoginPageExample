@@ -18,9 +18,10 @@ function AuthProvider(props) {
         .getCurrentUser()
         .then((response) => setCurrentUser(response.body))
         .catch(console.dir)
+        .finally(() => setIsCurrentUserIndeterminated(false))
+    } else {
+      setIsCurrentUserIndeterminated(false);
     }
-
-    setIsCurrentUserIndeterminated(false)
   }, [cookies, currentUser]);
 
   const rememberAuthToken = useCallback((token) => {

@@ -4,7 +4,7 @@ import cookies from 'constants/cookies';
 async function getCurrentUser() {
   const response = await APICall({
     method: 'GET',
-    endpoint: `/proxy/user`,
+    endpoint: `${process.env.REACT_APP_API_URL}/proxy/user`,
     headers: {
       Authorization: `Bearer ${cookies.get('auth-token')}`,
     }
