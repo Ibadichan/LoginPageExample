@@ -7,7 +7,7 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 const config = require('./config/index');
 
 const app = express();
-const port = process.env.SERVER_PORT || 3001;
+const port = process.env.PORT || 3000;
 const isProduction = process.env.NODE_ENV === 'production';
 
 app.use(cors(config.cors));
