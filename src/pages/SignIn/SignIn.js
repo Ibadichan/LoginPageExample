@@ -1,98 +1,79 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useCallback, useContext } from "react";
+import { Link, Redirect } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { signUpPath } from "helpers/routes";
+import { signUpPath, rootPath } from "helpers/routes";
+import AuthContext from "contexts/AuthContext";
 import AuthLayout from "components/layouts/Auth";
 import Button from "components/UI/Button";
-import InputGroup from "components/UI/InputGroup";
+import Form from "./components/Form";
+import { requests } from 'api';
 import userSchema from "./userSchema";
 import "./style.css";
 
 function SignInPage() {
-  const [currentUser, setCurrentUser] = useState(null);
+  const [commonFormError, setCommonFormError] = useState(null);
+  const [isFormLoading, setIsFormLoading] = useState(false);
 
   const { register, handleSubmit, errors } = useForm({
     resolver: yupResolver(userSchema),
   });
 
-  return (
-    <AuthLayout
-      className="sign-in"
-      header={
-        currentUser
-          ? `Hello ${currentUser.email}`
-          : "Please log in to your account"
+  const {
+    rememberAuthToken,
+    currentUser,
+    isCurrentUserIndeterminated,
+  } = useContext(AuthContext);
+
+  const onSubmit = useCallback(async (values) => {
+    setIsFormLoading(true);
+
+    try {
+      const response = await requests.users.authenticateUser(values);
+
+      if (response.body) {
+        setCommonFormError(null);
+        rememberAuthToken(response.body.token)
       }
-    >
-      {currentUser ? (
-        <p>{JSON.stringify(currentUser)}</p>
-      ) : (
-        <>
-          <form
-            onSubmit={handleSubmit(setCurrentUser)}
-            className="sign-in-form sign-in__form"
-            method="POST"
-            action="/sign-in"
-            noValidate
-          >
-            <InputGroup className="sign-in-form__item">
-              <InputGroup.Label
-                className="visually-hidden"
-                htmlFor="email-field"
-              >
-                Enter your email:
-              </InputGroup.Label>
+    } catch (error) {
+      if (error && error.status) {
+        setCommonFormError(error.response?.body?.error);
+      }
+    } finally {
+      setIsFormLoading(false);
+    }
+  }, [rememberAuthToken]);
 
-              <InputGroup.Input
-                type="email"
-                id="email-field"
-                placeholder="Email"
-                autoComplete="email"
-                name="email"
-                ref={register}
-                $error={errors.email?.message}
-                autoFocus
-              />
-            </InputGroup>
+  const guestContent = (
+    <AuthLayout className="sign-in" header={"Please log in to your account"}>
+      <Form
+        onSubmit={handleSubmit(onSubmit)}
+        commonError={commonFormError}
+        register={register}
+        errors={errors}
+        isLoading={isFormLoading}
+      />
 
-            <InputGroup className="sign-in-form__item">
-              <InputGroup.Label
-                className="visually-hidden"
-                htmlFor="password-field"
-              >
-                Enter your password:
-              </InputGroup.Label>
-
-              <InputGroup.Input
-                type="password"
-                id="password-field"
-                placeholder="Password"
-                autoComplete="current-password"
-                name="password"
-                ref={register}
-                $error={errors.password?.message}
-                $canShowPassword
-              />
-            </InputGroup>
-
-            <Button type="submit" >
-              Sign in
-            </Button>
-          </form>
-
-          <Button
-            $type="tertiary"
-            $component={Link}
-            to={signUpPath()}
-            className="sign-in__another-action"
-          >
-            New account
-          </Button>
-        </>
-      )}
+      <Button
+        $type="tertiary"
+        $component={Link}
+        to={signUpPath()}
+        className="sign-in__another-action"
+      >
+        New account
+      </Button>
     </AuthLayout>
   );
+
+  const clientContent = (
+    <Redirect to={rootPath()} />
+  );
+
+  if (isCurrentUserIndeterminated) {
+    return <AuthLayout />;
+  }
+
+  return currentUser ? clientContent : guestContent;
 }
 
 export default SignInPage;

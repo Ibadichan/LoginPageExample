@@ -10,6 +10,4 @@ async function registerUser(payload) {
   return response;
 }
 
-export {
-  registerUser,
-};
+export default registerUser;

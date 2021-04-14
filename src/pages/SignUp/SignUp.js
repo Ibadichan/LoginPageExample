@@ -1,18 +1,17 @@
-import React, { useCallback, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useCallback, useState, useContext } from "react";
+import { Link, Redirect } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { signInPath } from "helpers/routes";
+import { signInPath, rootPath } from "helpers/routes";
+import AuthContext from "contexts/AuthContext";
 import AuthLayout from "components/layouts/Auth";
 import Button from "components/UI/Button";
-import CurrentUserDetails from './components/CurrentUserDetails';
-import Form from './components/Form';
+import Form from "./components/Form";
 import userSchema from "./userSchema";
-import { registerUser } from './API';
+import { requests } from 'api';
 import "./style.css";
 
 function SignUpPage() {
-  const [createdUser, setCreatedUser] = useState(null);
   const [commonFormError, setCommonFormError] = useState(null);
   const [isFormLoading, setIsFormLoading] = useState(false);
 
@@ -20,58 +19,65 @@ function SignUpPage() {
     resolver: yupResolver(userSchema),
   });
 
+  const {
+    rememberAuthToken,
+    currentUser,
+    isCurrentUserIndeterminated,
+  } = useContext(AuthContext);
+
   const onSubmit = useCallback(async (values) => {
     setIsFormLoading(true);
 
     try {
-      const response = await registerUser(values);
+      const response = await requests.users.registerUser(values);
 
       if (response.body) {
         setCommonFormError(null);
-        setCreatedUser(response.body);
+
+        rememberAuthToken(response.body.token);
       }
     } catch (error) {
       if (error && error.status) {
-        setCommonFormError(error.response?.body?.error)
+        setCommonFormError(error.response?.body?.error);
       }
     } finally {
       setIsFormLoading(false);
     }
-  }, []);
+  }, [rememberAuthToken]);
 
-  return (
+  const guestContent = (
     <AuthLayout
       className="sign-up"
-      header={
-        createdUser
-          ? "User was created!"
-          : "Enter your details to create an account"
-      }
+      header="Enter your details to create an account"
     >
-      {createdUser ? (
-        <CurrentUserDetails user={createdUser} />
-      ) : (
-        <>
-          <Form
-            onSubmit={handleSubmit(onSubmit)}
-            commonError={commonFormError}
-            register={register}
-            errors={errors}
-            isLoading={isFormLoading}
-          />
+      <Form
+        onSubmit={handleSubmit(onSubmit)}
+        commonError={commonFormError}
+        register={register}
+        errors={errors}
+        isLoading={isFormLoading}
+      />
 
-          <Button
-            $type="tertiary"
-            $component={Link}
-            to={signInPath()}
-            className="sign-up__another-action"
-          >
-            Sign in
-          </Button>
-        </>
-      )}
+      <Button
+        $type="tertiary"
+        $component={Link}
+        to={signInPath()}
+        className="sign-up__another-action"
+      >
+        Sign in
+      </Button>
     </AuthLayout>
   );
+
+  const clientContent = (
+    <Redirect to={rootPath()} />
+  );
+
+  if (isCurrentUserIndeterminated) {
+    return <AuthLayout />;
+  }
+
+  return currentUser ? clientContent : guestContent;
 }
 
 export default SignUpPage;

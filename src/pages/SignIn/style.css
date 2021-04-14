@@ -19,3 +19,7 @@
 .sign-in__another-action {
   margin: 0 auto;
 }
+
+.sign-in-form__common-error {
+  margin-bottom: 16px;
+}
